@@ -28,9 +28,9 @@ levels = srl.get_support_resistance_levels(self.stock_prices, 2, 5, None)
 
 ## Example pics:
 
-![pic1](https://github.com/alexpantyukhin/support_resistance_levels/blob/pic1.jpg?raw=true)
+![pic1](https://github.com/alexpantyukhin/support_resistance_levels/blob/main/pic1.jpg?raw=true)
 
-![pic2](https://github.com/alexpantyukhin/support_resistance_levels/blob/pic2.jpg?raw=true)
+![pic2](https://github.com/alexpantyukhin/support_resistance_levels/blob/main/pic2.jpg?raw=true)
 
 ## Development
 
@@ -43,5 +43,4 @@ This project is licensed under the terms of the [MIT License](https://github.com
 ## Authors
 
     Alexander Pantyukhin - https://github.com/alexpantyukhin
-    Your Name or Your Organization - Your Contact Information
 
