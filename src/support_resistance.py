@@ -2,7 +2,7 @@ import pandas as pd
 from scipy.signal import argrelextrema
 import numpy as np
 from dataclasses import dataclass
-from functools import cache
+from functools import lru_cache
 from typing import Optional, Callable
 
 # Class to store level characteristics
@@ -135,7 +135,7 @@ def _merge_levels_best_way(levels: list[LevelCharacteristics],
     if level_point is None:
         level_point = _get_level_points
 
-    @cache
+    @lru_cache(maxsize=None)
     def get_best_dp(index: int, left_levels: Optional[int]):
         if index >= len_levels or left_levels == 0:
             return (0, None)
