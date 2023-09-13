@@ -164,12 +164,12 @@ def _merge_levels_best_way(
             level.level_value + level.percent_abs_value,
         )
 
-        # 1. we skip the current level and find the best variant without the current one.
+        # 1. Skip the current level and find the best variant without the current one.
         without_curr_level_points, without_curr_level_result = get_best_dp(
             index + 1, left_levels
         )
 
-        # 2. we check the current level and find the best variant with the current one.
+        # 2. Check the current level and find the best variant with the current one.
         next_left_levels = None if left_levels is None else left_levels - 1
         with_curr_level_point, with_curr_level_result = get_best_dp(
             next_level_index, next_left_levels
@@ -240,13 +240,14 @@ def get_support_resistance_levels(
         stock_price (pd.DataFrame): A DataFrame containing stock price data.
         order (int): The order for detecting extrema in the data.
         level_merge_percentage (float): The percentage used for merging similar levels.
-        max_level_number (Optional[int], optional): The maximum number of levels to return. Defaults to None.
-        level_point (Callable[[LevelCharacteristics], float], optional): A custom function to calculate the points
-        for each level. If not provided, a default point calculation function is used.
+        max_level_number (Optional[int], optional): The maximum number of levels to return.
+            Defaults to None.
+        level_point (Callable[[LevelCharacteristics], float], optional): A custom function to calculate
+            the points for each level. If not provided, a default point calculation function is used.
 
     Returns:
         Tuple[int, List[LevelCharacteristics]]: A tuple containing the total points of support and resistance levels
-        and a List of LevelCharacteristics objects representing the detected levels.
+            and a List of LevelCharacteristics objects representing the detected levels.
     """
 
     __validate_stock_price_dataframe(stock_price)
