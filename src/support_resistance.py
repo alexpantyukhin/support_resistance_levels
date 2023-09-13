@@ -24,7 +24,7 @@ def _find_extremas(stock_prices: pd.DataFrame, order: int
     min_extrema = argrelextrema(min_open_close, np.less_equal, order=order)
     max_extrema = argrelextrema(max_open_close, np.greater_equal, order=order)
 
-    return min_extrema[0], max_extrema[0], List(min_open_close[min_extrema[0]]), List(max_open_close[max_extrema[0]])
+    return min_extrema[0], max_extrema[0], list(min_open_close[min_extrema[0]]), list(max_open_close[max_extrema[0]])
 
 # Function to find left and right indexes within delta range
 def _find_left_right_indexes_in_delta(sorted_array: List[float],
@@ -131,7 +131,7 @@ def _merge_levels_best_way(levels: List[LevelCharacteristics],
                            level_point: Callable[[LevelCharacteristics], float] = None
                            ) -> Tuple[int, List[LevelCharacteristics]]:
     len_levels = len(levels)
-    levels_values = List(map(lambda x: x.level_value, levels))
+    levels_values = list(map(lambda x: x.level_value, levels))
     if level_point is None:
         level_point = _get_level_points
 
