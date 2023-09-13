@@ -240,14 +240,16 @@ def get_support_resistance_levels(
         stock_price (pd.DataFrame): A DataFrame containing stock price data.
         order (int): The order for detecting extrema in the data.
         level_merge_percentage (float): The percentage used for merging similar levels.
-        max_level_number (Optional[int], optional): The maximum number of levels to return.
-            Defaults to None.
-        level_point (Callable[[LevelCharacteristics], float], optional): A custom function to calculate
-            the points for each level. If not provided, a default point calculation function is used.
+        max_level_number (Optional[int], optional):
+            The maximum number of levels to return. Defaults to None.
+        level_point (Callable[[LevelCharacteristics], float], optional):
+            A custom function to calculate the points for each level.
+            If not provided, a default point calculation function is used.
 
     Returns:
-        Tuple[int, List[LevelCharacteristics]]: A tuple containing the total points of support and resistance levels
-            and a List of LevelCharacteristics objects representing the detected levels.
+        Tuple[int, List[LevelCharacteristics]]:
+            A tuple containing the total points of support and resistance levels and a
+            List of LevelCharacteristics objects representing the detected levels.
     """
 
     __validate_stock_price_dataframe(stock_price)
