@@ -3,20 +3,20 @@ from scipy.signal import argrelextrema
 import numpy as np
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Optional, Callable
+from typing import Optional, Callable, List, Tuple
 
 # Class to store level characteristics
 @dataclass
 class LevelCharacteristics:
-    mins_indexes: list[int]
-    maxs_indexes: list[int]
+    mins_indexes: List[int]
+    maxs_indexes: List[int]
     delta_spread_percentage: float
     percent_abs_value: float
     level_value: float
 
 # Function to find extrema
 def _find_extremas(stock_prices: pd.DataFrame, order: int
-                   ) -> tuple[list[int], list[int], list[int], list[int]]:
+                   ) -> Tuple[List[int], List[int], List[int], List[int]]:
 
     min_open_close = stock_prices[['close', 'open']].min(axis=1).to_numpy()
     max_open_close = stock_prices[['close', 'open']].max(axis=1).to_numpy()
@@ -27,9 +27,9 @@ def _find_extremas(stock_prices: pd.DataFrame, order: int
     return min_extrema[0], max_extrema[0], list(min_open_close[min_extrema[0]]), list(max_open_close[max_extrema[0]])
 
 # Function to find left and right indexes within delta range
-def _find_left_right_indexes_in_delta(sorted_array: list[float],
+def _find_left_right_indexes_in_delta(sorted_array: List[float],
                                       delta_absolute: float
-                                      ) -> list[tuple[int, int]]:
+                                      ) -> List[Tuple[int, int]]:
     left_bound = 0
     right_bound = 0
     len_sorted_array = len(sorted_array)
@@ -69,7 +69,7 @@ def _get_value_indexes(keys, values):
 def _get_level_characteristics(stocks: pd.DataFrame,
                                order: int,
                                percentage: int
-                               ) -> list[LevelCharacteristics]:
+                               ) -> List[LevelCharacteristics]:
 
     mins, maxs, mins_vals, maxs_vals = _find_extremas(stocks, order)
     extremas = sorted(mins_vals + maxs_vals)
@@ -126,10 +126,10 @@ def _binary_search(low, high, arr, x):
     return len(arr)
 
 # Function to merge levels
-def _merge_levels_best_way(levels: list[LevelCharacteristics],
+def _merge_levels_best_way(levels: List[LevelCharacteristics],
                            max_levels: Optional[int] = None,
                            level_point: Callable[[LevelCharacteristics], float] = None
-                           ) -> tuple[int, list[LevelCharacteristics]]:
+                           ) -> Tuple[int, List[LevelCharacteristics]]:
     len_levels = len(levels)
     levels_values = list(map(lambda x: x.level_value, levels))
     if level_point is None:
@@ -203,7 +203,7 @@ def get_support_resistance_levels(stock_price: pd.DataFrame,
                level_merge_percentage: float,
                max_level_number: Optional[int] = None,
                level_point: Callable[[LevelCharacteristics], float] = None
-               ) -> tuple[int, list[LevelCharacteristics]]:
+               ) -> Tuple[int, List[LevelCharacteristics]]:
     """
     Calculate support and resistance levels based on input stock price data.
 
@@ -216,8 +216,8 @@ def get_support_resistance_levels(stock_price: pd.DataFrame,
         for each level. If not provided, a default point calculation function is used.
 
     Returns:
-        tuple[int, list[LevelCharacteristics]]: A tuple containing the total points of support and resistance levels
-        and a list of LevelCharacteristics objects representing the detected levels.
+        Tuple[int, List[LevelCharacteristics]]: A tuple containing the total points of support and resistance levels
+        and a List of LevelCharacteristics objects representing the detected levels.
     """
 
     __validate_stock_price_dataframe(stock_price)
