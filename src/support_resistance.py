@@ -3,7 +3,7 @@ from scipy.signal import argrelextrema
 import numpy as np
 from dataclasses import dataclass
 from functools import lru_cache
-from typing import Optional, Callable, List
+from typing import Optional, Callable, List, Tuple
 
 # Class to store level characteristics
 @dataclass
@@ -16,7 +16,7 @@ class LevelCharacteristics:
 
 # Function to find extrema
 def _find_extremas(stock_prices: pd.DataFrame, order: int
-                   ) -> tuple[List[int], List[int], List[int], List[int]]:
+                   ) -> Tuple[List[int], List[int], List[int], List[int]]:
 
     min_open_close = stock_prices[['close', 'open']].min(axis=1).to_numpy()
     max_open_close = stock_prices[['close', 'open']].max(axis=1).to_numpy()
@@ -29,7 +29,7 @@ def _find_extremas(stock_prices: pd.DataFrame, order: int
 # Function to find left and right indexes within delta range
 def _find_left_right_indexes_in_delta(sorted_array: List[float],
                                       delta_absolute: float
-                                      ) -> List[tuple[int, int]]:
+                                      ) -> List[Tuple[int, int]]:
     left_bound = 0
     right_bound = 0
     len_sorted_array = len(sorted_array)
@@ -129,7 +129,7 @@ def _binary_search(low, high, arr, x):
 def _merge_levels_best_way(levels: List[LevelCharacteristics],
                            max_levels: Optional[int] = None,
                            level_point: Callable[[LevelCharacteristics], float] = None
-                           ) -> tuple[int, List[LevelCharacteristics]]:
+                           ) -> Tuple[int, List[LevelCharacteristics]]:
     len_levels = len(levels)
     levels_values = List(map(lambda x: x.level_value, levels))
     if level_point is None:
@@ -203,7 +203,7 @@ def get_support_resistance_levels(stock_price: pd.DataFrame,
                level_merge_percentage: float,
                max_level_number: Optional[int] = None,
                level_point: Callable[[LevelCharacteristics], float] = None
-               ) -> tuple[int, List[LevelCharacteristics]]:
+               ) -> Tuple[int, List[LevelCharacteristics]]:
     """
     Calculate support and resistance levels based on input stock price data.
 
@@ -216,7 +216,7 @@ def get_support_resistance_levels(stock_price: pd.DataFrame,
         for each level. If not provided, a default point calculation function is used.
 
     Returns:
-        tuple[int, List[LevelCharacteristics]]: A tuple containing the total points of support and resistance levels
+        Tuple[int, List[LevelCharacteristics]]: A tuple containing the total points of support and resistance levels
         and a List of LevelCharacteristics objects representing the detected levels.
     """
 
