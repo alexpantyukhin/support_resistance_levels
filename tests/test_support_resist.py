@@ -1,5 +1,5 @@
 import unittest
-from src.support_resistance import get_support_resistance_levels, LevelCharacteristics
+from support_resistance import get_support_resistance_levels, LevelCharacteristics
 import pandas as pd
 
 
