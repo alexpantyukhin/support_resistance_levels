@@ -11,8 +11,10 @@ from typing import Optional, Callable, List, Tuple
 class LevelCharacteristics:
     mins_indexes: List[int]
     maxs_indexes: List[int]
-    delta_spread_percentage: float
-    percent_abs_value: float
+    channel_mins_indexes: List[int]
+    channel_maxs_indexes: List[int]
+    channel_delta_spread_percentage: float
+    channel_delta_spread_abs_value: float
     level_value: float
 
 
@@ -95,23 +97,33 @@ def _get_level_characteristics(
         level = extremas[i]
         left_index, right_index = left_right_indexes[i]
 
-        mins_full = []
-        maxs_full = []
-        for i in range(left_index, right_index + 1):
-            extrema = extremas[i]
+        mins_indexes_full = []
+        maxs_indexes_full = []
+        channel_mins_indexes_full = []
+        channel_maxs_indexes_full = []
+        for j in range(left_index, right_index + 1):
+            extrema = extremas[j]
 
             if extrema in mins_values_indexes:
-                mins_full += mins_values_indexes[extrema]
+                if j == i:
+                    mins_indexes_full += mins_values_indexes[extrema]
+                else:
+                    channel_mins_indexes_full += mins_values_indexes[extrema]
 
             if extrema in maxs_values_indexes:
-                maxs_full += maxs_values_indexes[extrema]
+                if j == i:
+                    maxs_indexes_full += maxs_values_indexes[extrema]
+                else:
+                    channel_maxs_indexes_full += maxs_values_indexes[extrema]
 
         result.append(
             LevelCharacteristics(
-                mins_indexes=mins_full,
-                maxs_indexes=maxs_full,
-                delta_spread_percentage=percentage,
-                percent_abs_value=percent_abs_value,
+                mins_indexes=mins_indexes_full,
+                maxs_indexes=maxs_indexes_full,
+                channel_mins_indexes=channel_mins_indexes_full,
+                channel_maxs_indexes=channel_maxs_indexes_full,
+                channel_delta_spread_percentage=percentage,
+                channel_delta_spread_abs_value=percent_abs_value,
                 level_value=level,
             )
         )
@@ -121,7 +133,10 @@ def _get_level_characteristics(
 
 # Function to get the number of points on a level
 def _get_level_points(level: LevelCharacteristics) -> int:
-    return len(level.mins_indexes) + len(level.maxs_indexes)
+    return len(level.mins_indexes) + \
+           len(level.maxs_indexes) + \
+           len(level.channel_mins_indexes) + \
+           len(level.channel_maxs_indexes)
 
 
 # Function for binary search
@@ -161,7 +176,7 @@ def _merge_levels_best_way(
             index,
             len_levels - 1,
             levels_values,
-            level.level_value + level.percent_abs_value,
+            level.level_value + level.channel_delta_spread_abs_value,
         )
 
         # 1. Skip the current level and find the best variant without the current one.
