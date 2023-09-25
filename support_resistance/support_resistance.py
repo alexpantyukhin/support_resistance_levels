@@ -217,11 +217,11 @@ def _merge_levels_best_way(
 
 def __validate_stock_price_dataframe(stock_price: pd.DataFrame):
     expected_columns = {
-        "close": ["float64", "float32"],
-        "high": ["float64", "float32"],
-        "low": ["float64", "float32"],
-        "open": ["float64", "float32"],
-        "volume": ["int8", "int16", "int32", "int64"],
+        "close": set(["float64", "float32", "int8", "int16", "int32", "int64"]),
+        "high": set(["float64", "float32", "int8", "int16", "int32", "int64"]),
+        "low": set(["float64", "float32", "int8", "int16", "int32", "int64"]),
+        "open": set(["float64", "float32", "int8", "int16", "int32", "int64"]),
+        "volume": set(["int8", "int16", "int32", "int64"]),
     }
 
     missing_columns = [
